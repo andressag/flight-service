@@ -9,6 +9,9 @@ public class FlightInfo {
     private String flight;
     private LocalTime departure;
 
+    public FlightInfo() {
+    }
+
     public FlightInfo(String company, LocalTime departure) {
         this.flight = company;
         this.departure = departure;

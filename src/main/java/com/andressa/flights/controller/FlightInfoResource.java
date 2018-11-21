@@ -1,7 +1,7 @@
 package com.andressa.flights.controller;
 
-import com.andressa.flights.FlightNotFoundException;
-import com.andressa.flights.TimeFormatNotConvertibleException;
+import com.andressa.flights.exception.FlightNotFoundException;
+import com.andressa.flights.exception.TimeFormatNotConvertibleException;
 import com.andressa.flights.model.FlightInfo;
 import com.andressa.flights.service.FlightInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,17 +11,26 @@ import java.time.LocalTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/flights")
-public class FlightInfoController {
+@RequestMapping("/api/flights")
+public class FlightInfoResource {
 
     private final FlightInfoService service;
 
     @Autowired
-    public FlightInfoController(FlightInfoService service) {
+    public FlightInfoResource(FlightInfoService service) {
         this.service = service;
     }
 
-    @ResponseBody
+    @GetMapping
+    public List<FlightInfo> getAllFlights(@PathVariable("requestedTime") String time) {
+        final LocalTime requestedTime = this.validateRequestedTime(time);
+        try {
+            return service.getAllFlights();
+        } catch (Exception e) {
+            throw new FlightNotFoundException();
+        }
+    }
+
     @GetMapping(path = "/{requestedTime}")
     public List<FlightInfo> getAvailableFlights(@PathVariable("requestedTime") String time) {
         final LocalTime requestedTime = this.validateRequestedTime(time);

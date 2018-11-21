@@ -1,10 +1,9 @@
 package com.andressa.flights.controller;
 
 import com.andressa.flights.model.FlightInfo;
-import com.andressa.flights.service.FlightInfoService;
+import com.andressa.flights.service.DefaultFlightInfoService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.internal.verification.VerificationModeFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,13 +13,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.lang.reflect.Array;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.reset;
@@ -32,13 +28,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
-public class FlightInfoControllerIntegrationTest {
+public class FlightInfoResourceIntegrationTest {
 
     @Autowired
     private MockMvc mvc;
 
     @MockBean
-    private FlightInfoService service;
+    private DefaultFlightInfoService service;
 
     @Test
     public void shouldReturnFlightList() throws Exception {
@@ -53,7 +49,7 @@ public class FlightInfoControllerIntegrationTest {
         when(service.getAvailableFlights(searchTime)).thenReturn(flightInfos);
 
         // Then
-        mvc.perform(get("/flights/" + searchTime)
+        mvc.perform(get("/api/flights/" + searchTime)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
