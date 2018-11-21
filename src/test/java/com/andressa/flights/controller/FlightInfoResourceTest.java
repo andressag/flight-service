@@ -1,9 +1,9 @@
 package com.andressa.flights.controller;
 
-import com.andressa.flights.FlightNotFoundException;
-import com.andressa.flights.TimeFormatNotConvertibleException;
+import com.andressa.flights.exception.FlightNotFoundException;
+import com.andressa.flights.exception.TimeFormatNotConvertibleException;
 import com.andressa.flights.model.FlightInfo;
-import com.andressa.flights.service.FlightInfoService;
+import com.andressa.flights.service.DefaultFlightInfoService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -19,10 +19,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class FlightInfoControllerTest {
+public class FlightInfoResourceTest {
 
     @Mock
-    private FlightInfoService service;
+    private DefaultFlightInfoService service;
 
     @Test
     public void testValidInput() {
@@ -33,7 +33,7 @@ public class FlightInfoControllerTest {
         when(service.getAvailableFlights(any(LocalTime.class))).thenReturn(asList(flights));
 
         // When
-        final List<FlightInfo> results = new FlightInfoController(service).getAvailableFlights(timeRequested);
+        final List<FlightInfo> results = new FlightInfoResource(service).getAvailableFlights(timeRequested);
 
         // Then
         verify(service).getAvailableFlights(any(LocalTime.class));
@@ -48,7 +48,7 @@ public class FlightInfoControllerTest {
 
         // When
         assertThatThrownBy(() -> {
-            new FlightInfoController(service).getAvailableFlights(timeRequested);
+            new FlightInfoResource(service).getAvailableFlights(timeRequested);
         }).isInstanceOf(TimeFormatNotConvertibleException.class);
 
         // Then
@@ -64,7 +64,7 @@ public class FlightInfoControllerTest {
 
         // When
         assertThatThrownBy(() -> {
-            new FlightInfoController(service).getAvailableFlights(timeRequested);
+            new FlightInfoResource(service).getAvailableFlights(timeRequested);
         }).isInstanceOf(FlightNotFoundException.class);
 
         // Then

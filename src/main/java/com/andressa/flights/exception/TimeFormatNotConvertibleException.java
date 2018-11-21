@@ -1,4 +1,4 @@
-package com.andressa.flights;
+package com.andressa.flights.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

@@ -21,7 +21,7 @@ public class FlightInfoServiceTest {
         final FlightInfo found = new FlightInfo("Air Canada 8099", LocalTime.parse("07:30"));
 
         // When
-        final List<FlightInfo> results = new FlightInfoService().getAvailableFlights(searchTime);
+        final List<FlightInfo> results = new DefaultFlightInfoService().getAvailableFlights(searchTime);
 
         // Then
         assertNotNull(results);
@@ -41,7 +41,7 @@ public class FlightInfoServiceTest {
         final FlightInfo flightInfoFour = new FlightInfo("Delta 3833", LocalTime.parse("15:00"));
 
         // When
-        final List<FlightInfo> results = new FlightInfoService().getAvailableFlights(searchTime);
+        final List<FlightInfo> results = new DefaultFlightInfoService().getAvailableFlights(searchTime);
 
         // Then
         assertThat(results)
@@ -57,7 +57,7 @@ public class FlightInfoServiceTest {
         final LocalTime searchTime = LocalTime.parse("19:30");
 
         // When
-        final List<FlightInfo> results = new FlightInfoService().getAvailableFlights(searchTime);
+        final List<FlightInfo> results = new DefaultFlightInfoService().getAvailableFlights(searchTime);
 
         // Then
         assertThat(results).isEmpty();
